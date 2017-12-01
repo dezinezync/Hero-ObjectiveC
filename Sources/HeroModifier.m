@@ -283,7 +283,7 @@ const HeroModifierApplyBlock fade = ^(HeroTargetState *targetState) {
     }
     
     if ([name isEqualToString:@"ignoreSubviewModifiers"]) {
-        modifier = [self ignoreSubviewModifiers:@([parameters getBoolAtIndex:0]) ? @([parameters getBoolAtIndex:0]) : @(NO)];
+        modifier = [self ignoreSubviewModifiers:[parameters getBoolAtIndex:0] ? @([parameters getBoolAtIndex:0]) : @(NO)];
     }
     
     if ([name isEqualToString:@"zPosition"]) {

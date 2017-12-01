@@ -20,6 +20,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import <objc/runtime.h>
+#import "UIKit+Hero.h"
 
 typedef void(^HeroCompletionCallback)(BOOL animate);
 
@@ -177,7 +178,7 @@ static NSMutableArray <Class> *_enablePlugins;
 
 @end
 
-typedef void(^HeroUpdateBlock)();
+typedef void(^HeroUpdateBlock)(void);
 @implementation Hero (InteractiveTransition)
 
 - (void)updateProgress:(CGFloat)progress {
@@ -302,17 +303,17 @@ typedef void(^HeroUpdateBlock)();
     
     [self.transitionContainer setUserInteractionEnabled:NO];
     
+    // take a snapshot to hide all the flashing that might happen
+    UIView *completeSnapshot = [self.fromView slowSnapshotView];
+    [self.transitionContainer addSubview:completeSnapshot];
+    
     // a view to hold all the animating views
     self.container = [[UIView alloc] initWithFrame:self.transitionContainer.bounds];
     [self.transitionContainer addSubview:self.container];
     
-    // take a snapshot to hide all the flashing that might happen
-    UIView *completeSnapshot = [self.fromView snapshotViewAfterScreenUpdates:YES];
-    [self.transitionContainer addSubview:completeSnapshot];
-    
     // need to add fromView first, then insert toView under it. This eliminates the flash
+    [self.container addSubview:self.toView];
     [self.container addSubview:self.fromView];
-    [self.container insertSubview:self.toView belowSubview:self.fromView];
     [self.container setBackgroundColor:self.toView.backgroundColor];
     
     self.toView.frame = self.fromView.frame;
@@ -385,7 +386,7 @@ typedef void(^HeroUpdateBlock)();
         }];
         
         // we are done with setting up, so remove the covering snapshot
-        [completeSnapshot removeFromSuperview];
+//        [completeSnapshot removeFromSuperview];
         self.totalDuration = totalDuration;
         if (animatorWantsInteractive) {
             [self updateProgress:0.001];

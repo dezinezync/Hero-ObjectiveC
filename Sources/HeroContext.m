@@ -147,7 +147,11 @@
     if (![view isKindOfClass:[UINavigationBar class]]) {
         // the Snapshot's contentView must have hold the cornerRadius value,
         // since the snapshot might not have maskToBounds set
-        UIView *contentView = snapshot.subviews[0];
+        UIView *contentView;
+        if (snapshot.subviews.count)
+            contentView = snapshot.subviews[0];
+        else
+            contentView = snapshot;
         contentView.layer.cornerRadius = view.layer.cornerRadius;
         contentView.layer.masksToBounds = YES;
     }
