@@ -307,6 +307,14 @@ typedef void(^HeroUpdateBlock)(void);
     UIView *completeSnapshot = [self.fromView slowSnapshotView];
     [self.transitionContainer addSubview:completeSnapshot];
     
+    // remove old subviews
+    if (self.transitionContainer.subviews.count) {
+        for (UIView *subview in self.transitionContainer.subviews) { @autoreleasepool {
+            if (subview != completeSnapshot)
+                [subview removeFromSuperview];
+        }}
+    }
+    
     // a view to hold all the animating views
     self.container = [[UIView alloc] initWithFrame:self.transitionContainer.bounds];
     [self.transitionContainer addSubview:self.container];
