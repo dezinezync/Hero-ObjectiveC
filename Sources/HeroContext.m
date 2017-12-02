@@ -145,21 +145,17 @@
     view.layer.cornerRadius = oldCornerRadius;
     view.alpha = oldAlpha;
     
-    if (![view isKindOfClass:[UINavigationBar class]]) {
+    if (![view isKindOfClass:[UINavigationBar class]] && snapshot.subviews.count > 0) {
         // the Snapshot's contentView must have hold the cornerRadius value,
         // since the snapshot might not have maskToBounds set
-        UIView *contentView;
-        if (!snapshot.subviews.count)
-            snapshot = [view slowSnapshotView];
-        
-        contentView = snapshot.subviews[0];
-        contentView.backgroundColor = view.backgroundColor;
+        UIView *contentView = snapshot.subviews[0];
 
         contentView.layer.cornerRadius = view.layer.cornerRadius;
         contentView.layer.masksToBounds = YES;
     }
     
     snapshot.layer.cornerRadius = view.layer.cornerRadius;
+    
     __block BOOL contain = NO;
     [self.targetStates enumerateObjectsUsingBlock:^(NSArray * _Nonnull pair, NSUInteger idx, BOOL * _Nonnull stop) {
         if (pair[0] == view && ((HeroTargetState *)pair[1]).zPosition) {
@@ -175,7 +171,6 @@
     snapshot.layer.opacity = view.layer.opacity;
     snapshot.layer.opaque = view.layer.isOpaque;
     snapshot.layer.anchorPoint = view.layer.anchorPoint;
-    snapshot.layer.masksToBounds = view.layer.masksToBounds;
     snapshot.layer.borderColor = view.layer.borderColor;
     snapshot.layer.borderWidth = view.layer.borderWidth;
     snapshot.layer.transform = view.layer.transform;
@@ -183,6 +178,11 @@
     snapshot.layer.shadowOpacity = view.layer.shadowOpacity;
     snapshot.layer.shadowColor = view.layer.shadowColor;
     snapshot.layer.shadowOffset = view.layer.shadowOffset;
+    
+    if (view.layer.cornerRadius > 0.f)
+        snapshot.layer.masksToBounds = YES;
+    else
+        snapshot.layer.cornerRadius = view.layer.masksToBounds;
     
     snapshot.frame = [containerView convertRect:view.bounds fromView:view];
     snapshot.heroID = view.heroID;
