@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
+#import "Hero.h"
 #import "HeroModifier.h"
 
 @interface UIView (Hero)
