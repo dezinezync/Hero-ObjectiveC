@@ -174,11 +174,11 @@ static struct PreviousDelegates prevDelegates = {@"heroPreviousNavigationDelegat
     } else {
         self.transitioningDelegate = nil;
         UINavigationController *navi = (UINavigationController *)self;
-        if (navi && [navi.delegate isKindOfClass:[Hero class]]) {
+        if (navi && [navi isKindOfClass:UINavigationController.class] && [navi.delegate isKindOfClass:[Hero class]]) {
             navi.delegate = self.previousNavigationDelegate;
         }
         UITabBarController *tab = (UITabBarController *)self;
-        if (tab && [tab.delegate isKindOfClass:[Hero class]]) {
+        if (tab && [tab isKindOfClass:UITabBarController.class] && [tab.delegate isKindOfClass:[Hero class]]) {
             tab.delegate = self.previousTabBarDelegate;
         }
     }
