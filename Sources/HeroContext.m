@@ -141,6 +141,7 @@
     } else {
         snapshot = [view snapshotViewAfterScreenUpdates:YES];
     }
+    
     view.layer.cornerRadius = oldCornerRadius;
     view.alpha = oldAlpha;
     
@@ -148,10 +149,12 @@
         // the Snapshot's contentView must have hold the cornerRadius value,
         // since the snapshot might not have maskToBounds set
         UIView *contentView;
-        if (snapshot.subviews.count)
-            contentView = snapshot.subviews[0];
-        else
-            contentView = snapshot;
+        if (!snapshot.subviews.count)
+            snapshot = [view slowSnapshotView];
+        
+        contentView = snapshot.subviews[0];
+        contentView.backgroundColor = view.backgroundColor;
+
         contentView.layer.cornerRadius = view.layer.cornerRadius;
         contentView.layer.masksToBounds = YES;
     }

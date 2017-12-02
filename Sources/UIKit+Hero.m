@@ -77,7 +77,8 @@ static struct AssociatedKeys assoKey = {@"ht_heroID", @"ht_heroModifers"};
 }
 
 - (UIView *)slowSnapshotView {
-    UIGraphicsBeginImageContextWithOptions(self.bounds.size, self.isOpaque, 0);
+    UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, 0);
+    
     [self.layer renderInContext:UIGraphicsGetCurrentContext()];
     
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
@@ -86,7 +87,11 @@ static struct AssociatedKeys assoKey = {@"ht_heroID", @"ht_heroModifers"};
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     imageView.frame = self.bounds;
     UIView *snapshotView = [[UIView alloc] initWithFrame:self.bounds];
+    
     [snapshotView addSubview:imageView];
+    
+    snapshotView.backgroundColor = self.backgroundColor;
+    snapshotView.opaque = self.isOpaque;
     
     return snapshotView;
 }
