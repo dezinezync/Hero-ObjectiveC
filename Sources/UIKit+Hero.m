@@ -185,7 +185,6 @@ static struct PreviousDelegates prevDelegates = {@"heroPreviousNavigationDelegat
 }
 
 - (IBAction)ht_dismiss:(id)sender {
-    self.isHeroEnabled = NO;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
