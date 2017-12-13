@@ -304,7 +304,7 @@ typedef void(^HeroUpdateBlock)(void);
     [self.transitionContainer setUserInteractionEnabled:NO];
     
     // take a snapshot to hide all the flashing that might happen
-    UIView *completeSnapshot = [self.fromView slowSnapshotView];
+    UIView *completeSnapshot = [self.fromView snapshotViewAfterScreenUpdates:YES];
     [self.transitionContainer addSubview:completeSnapshot];
     
     // remove old subviews
